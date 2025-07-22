@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, ListItem, ListItemText, Drawer, Toolbar, Box } from '@mui/material';
+import { List, ListItem, ListItemText, Drawer, Toolbar, Box, ListItemButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -12,6 +12,7 @@ const Sidebar = () => {
   const adminLinks = [
     { label: 'Dashboard', path: '/admin/dashboard' },
     { label: 'Stores', path: '/admin/stores' },
+    { label: 'Store Managers', path: '/admin/store-managers' },
     { label: 'Walk-in Logs', path: '/admin/walkin-logs' },
     { label: 'Telco Trends', path: '/admin/telco-trends' },
   ];
@@ -37,8 +38,10 @@ const Sidebar = () => {
       <Box sx={{ overflow: 'auto' }}>
         <List>
           {links.map((item) => (
-            <ListItem button key={item.label} onClick={() => navigate(item.path)}>
-              <ListItemText primary={item.label} />
+            <ListItem key={item.label} disablePadding>
+              <ListItemButton onClick={() => navigate(item.path)}>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
             </ListItem>
           ))}
         </List>

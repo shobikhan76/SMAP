@@ -5,6 +5,12 @@ import { useAuth } from '../../context/AuthContext';
 const StoreDashboard = () => {
   const { user } = useAuth();
 
+  // Safe destructuring
+  const store = user?.store;
+  const storeName = store?.name || 'Not assigned';
+  const storeCategory = store?.category || 'N/A';
+  const storeFloor = store?.floor || 'N/A';
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
@@ -12,7 +18,10 @@ const StoreDashboard = () => {
       </Typography>
 
       <Typography variant="subtitle1" gutterBottom>
-        Store: {user?.storeName || 'Not assigned'}
+        Store: {storeName}
+      </Typography>
+      <Typography variant="body2" gutterBottom>
+        Category: {storeCategory} | Floor: {storeFloor}
       </Typography>
 
       <Grid container spacing={3}>

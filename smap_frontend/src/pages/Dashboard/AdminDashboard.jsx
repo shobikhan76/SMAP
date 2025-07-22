@@ -12,7 +12,8 @@ const AdminDashboard = () => {
       </Typography>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={4}>
+        {/* Total Stores */}
+        <Grid item xs={12} sm={6} md={3}>
           <Paper sx={{ p: 2 }}>
             <Typography variant="h6">Total Stores</Typography>
             <Typography variant="h4">12</Typography>
@@ -20,7 +21,17 @@ const AdminDashboard = () => {
           </Paper>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={4}>
+        {/* Store Managers */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Store Managers</Typography>
+            <Typography variant="h4">5</Typography>
+            <Button size="small" href="/admin/store-managers">Manage</Button>
+          </Paper>
+        </Grid>
+
+        {/* Walk-ins */}
+        <Grid item xs={12} sm={6} md={3}>
           <Paper sx={{ p: 2 }}>
             <Typography variant="h6">Walk-ins Today</Typography>
             <Typography variant="h4">53</Typography>
@@ -28,22 +39,22 @@ const AdminDashboard = () => {
           </Paper>
         </Grid>
 
-        <Grid item xs={12} sm={12} md={8}>
+        {/* Telco Inquiries */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Telco Inquiries</Typography>
+            <Typography variant="h4">9</Typography>
+            <Button size="small" href="/admin/telco-trends">Insights</Button>
+          </Paper>
+        </Grid>
+
+        {/* Walk-in Trend Chart */}
+        <Grid item xs={12}>
           <Paper sx={{ p: 2, minHeight: 240 }}>
             <Typography variant="h6">Walk-in Trend</Typography>
             <Box mt={2}>
               {/* Placeholder for WalkinChart component */}
               <Typography color="text.secondary">[Chart will go here]</Typography>
-            </Box>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2, minHeight: 240 }}>
-            <Typography variant="h6">Telco Inquiries</Typography>
-            <Box mt={2}>
-              {/* Placeholder for Telco trend */}
-              <Typography color="text.secondary">[Chart or list]</Typography>
             </Box>
           </Paper>
         </Grid>

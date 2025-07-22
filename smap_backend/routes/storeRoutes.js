@@ -30,13 +30,23 @@ const {
   createStore,
   getAllStores,
   getStoreById,
+  updateStore,
+  deleteStore,
 } = require('../controllers/storeController');
 
 const { protect } = require('../middleware/authMiddleware');
 const { isAdmin } = require('../middleware/roleMiddleware');
 
-router.post('/createStore', protect, isAdmin, createStore);
-router.get('/getStore', protect, getAllStores);
-router.get('/:id', protect, getStoreById);
+// All routes below are protected and admin-only
+
+// Create and Get all stores
+router.post('/', protect, isAdmin, createStore);         // POST /api/stores
+router.get('/', protect, isAdmin, getAllStores);         // GET  /api/stores
+
+// Read, Update, Delete by ID
+router.get('/:id', protect, isAdmin, getStoreById);      // GET    /api/stores/:id
+router.put('/:id', protect, isAdmin, updateStore);       // PUT    /api/stores/:id
+router.delete('/:id', protect, isAdmin, deleteStore);    // DELETE /api/stores/:id
 
 module.exports = router;
+

@@ -14,46 +14,55 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+  e.preventDefault();
+  setError('');
 
-    try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
-        email,
-        password,
-      });
+  try {
+    const response = await axios.post('http://localhost:5000/api/users/login', {
+      email,
+      password,
+    });
 
-      if (response.status === 200) {
-        const { token, user } = response.data;
+    if (response.status === 200) {
+      const data = response.data;
 
-        // Save to local storage
-        const userData = { ...user, token };
-        localStorage.setItem('user', JSON.stringify(userData));
+      const userData = {
+        _id: data._id,
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        store: data.store,
+        token: data.token,
+      };
 
-        // Set context
-        login(userData);
+      // Save to localStorage
+      localStorage.setItem('user', JSON.stringify(userData));
 
-        // Redirect based on role
-        if (user.role === 'admin') {
-          navigate('/admin/dashboard');
-        } else if (user.role === 'storemanager') {
-          navigate('/store/dashboard');
-        } else {
-          navigate('/unauthorized');
-        }
+      // Set context
+      login(userData);
+
+      // Redirect based on role
+      if (data.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else if (data.role === 'storeManager') {
+        navigate('/store/dashboard');
       } else {
-        setError('Unexpected response. Please try again.');
+        navigate('/unauthorized');
       }
-
-    } catch (err) {
-      console.error(err);
-      if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message);
-      } else {
-        setError('Invalid credentials or server error.');
-      }
+    } else {
+      setError('Unexpected response. Please try again.');
     }
-  };
+
+  } catch (err) {
+    console.error(err);
+    if (err.response?.data?.message) {
+      setError(err.response.data.message);
+    } else {
+      setError('Invalid credentials or server error.');
+    }
+  }
+};
+
 
   return (
     <Container maxWidth="sm">
