@@ -12,8 +12,8 @@ const Sidebar = () => {
   const adminLinks = [
     { label: 'Dashboard', path: '/admin/dashboard' },
     { label: 'Stores', path: '/admin/stores' },
-    { label: 'Store Managers', path: '/admin/store-managers' },
-    { label: 'Walk-in Logs', path: '/admin/walkin-logs' },
+    { label: 'Store Management', path: '/admin/store-managers' },
+    { label: 'Walkin-Logs', path: '/admin/walkin-logs' },
     { label: 'Telco Trends', path: '/admin/telco-trends' },
   ];
 

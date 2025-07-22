@@ -9,7 +9,7 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/Dashboard/AdminDashboard';
 import StoreDashboard from './pages/Dashboard/StoreDashboard';
 import StoreManagement from './pages/admin/StoreManagement';
-
+import WalkInLogs from './pages/admin/WalkInLogs';
 
 // Layouts
 import AdminLayout from './layouts/AdminLayout';
@@ -24,7 +24,7 @@ const App = () => {
       <CssBaseline />
       <AuthProvider>
         <Routes>
-          {/* Default redirect to login */}
+          {/* Redirect root to login */}
           <Route path="/" element={<Navigate to="/login" />} />
 
           {/* Public Route */}
@@ -33,24 +33,26 @@ const App = () => {
           {/* Admin Protected Routes */}
           <Route element={<PrivateRoute allowedRoles={['admin']} />}>
             <Route path="/admin" element={<AdminLayout />}>
-              <Route path="Dashboard" element={<AdminDashboard />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="stores" element={<StoreManagement />} />
               <Route path="store-managers" element={<StoreManagement />} />
-              {/* Future: /admin/walkin-logs, etc. */}
+              <Route path="walkin-logs" element={<WalkInLogs />} />
+              {/* Add more admin routes here as needed */}
             </Route>
           </Route>
 
           {/* Store Manager Protected Routes */}
           <Route element={<PrivateRoute allowedRoles={['storemanager']} />}>
-            <Route path="Stores" element={<StoreLayout />}>
+            <Route path="/store" element={<StoreLayout />}>
               <Route path="dashboard" element={<StoreDashboard />} />
-              {/* Future: /store/walkin-logs, /store/telco-forms, etc. */}
+              {/* Add more store routes here like walk-in logs, telco forms, etc. */}
             </Route>
           </Route>
 
           {/* Unauthorized Access */}
           <Route path="/unauthorized" element={<h1>Access Denied</h1>} />
 
-          {/* 404 Not Found */}
+          {/* 404 Fallback */}
           <Route path="*" element={<h1>404 - Page Not Found</h1>} />
         </Routes>
       </AuthProvider>
