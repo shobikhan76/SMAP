@@ -12,11 +12,25 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:5000/api",
+        url: "http://localhost:5000", // or use process.env.BASE_URL
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
       },
     ],
   },
-  apis: ["./routes/*.js"], // Adjust path if your routes are in a subfolder
+  apis: ["./routes/*.js"], // adjust to match your route file locations
 };
 
 const swaggerSpec = swaggerJsdoc(options);

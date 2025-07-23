@@ -1,9 +1,15 @@
+const mongoose = require('mongoose');
 const Store = require('../models/Store');
 
 // Create a store
 const createStore = async (req, res) => {
   try {
     const { name, category, floor, manager } = req.body;
+
+    if (manager && !mongoose.Types.ObjectId.isValid(manager)) {
+      return res.status(400).json({ message: 'Invalid manager ID' });
+    }
+
     const store = await Store.create({ name, category, floor, manager });
     res.status(201).json(store);
   } catch (error) {
@@ -35,8 +41,17 @@ const getStoreById = async (req, res) => {
 // Update a store
 const updateStore = async (req, res) => {
   try {
-    const store = await Store.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updateData = { ...req.body };
+
+    // If manager is included, validate ObjectId
+    if (updateData.manager && !mongoose.Types.ObjectId.isValid(updateData.manager)) {
+      return res.status(400).json({ message: 'Invalid manager ID' });
+    }
+
+    const store = await Store.findByIdAndUpdate(req.params.id, updateData, { new: true });
+
     if (!store) return res.status(404).json({ message: 'Store not found' });
+
     res.json(store);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -54,7 +69,26 @@ const deleteStore = async (req, res) => {
   }
 };
 
+
+// ✅ Get the current store for the logged-in Store Manager
+const getMyStore = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const store = await Store.findOne({ manager: userId }).populate('manager', 'name email');
+    if (!store) {
+      return res.status(404).json({ message: 'Store not found for this manager.' });
+    }
+
+    res.status(200).json(store);
+  } catch (err) {
+    console.error('Error in getMyStore:', err);
+    res.status(500).json({ message: 'Server error while fetching store.' });
+  }
+};
+
 module.exports = {
+  getMyStore, 
   createStore,
   getAllStores,
   getStoreById,

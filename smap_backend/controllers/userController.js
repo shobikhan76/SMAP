@@ -1,7 +1,9 @@
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const Store = require('../models/Store');
 
-// @desc    Register new store manager
+
+// @desc    Register new store manager or admin
 // @route   POST /api/users/register
 // @access  Admin only
 const registerUser = async (req, res) => {
@@ -30,7 +32,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Login user and get token
+// @desc    Login user and return token
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = async (req, res) => {
@@ -55,7 +57,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Get all users (admin only)
+// @desc    Get all users
 // @route   GET /api/users
 // @access  Admin only
 const getAllUsers = async (req, res) => {
@@ -67,8 +69,37 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// ✅ NEW: Delete a user by ID
+// @route   DELETE /api/users/:id
+// @access  Admin only
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+// GET /api/stores (only for store managers)
+const getStoreByManager = async (req, res) => {
+  try {
+    const store = await Store.findOne({ manager: req.user._id }).populate('manager', 'name');
+    if (!store) return res.status(404).json({ message: 'No store assigned to this user' });
+
+    res.json(store);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
 module.exports = {
   registerUser,
   loginUser,
   getAllUsers,
+  deleteUser,
+  getStoreByManager // exported here
 };

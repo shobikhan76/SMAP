@@ -6,19 +6,19 @@ const recommendationSchema = new mongoose.Schema({
     ref: 'Store',
     required: true,
   },
-  products: [
-    {
-      type: String,
-      required: true,
-    }
-  ],
+  products: {
+    type: [String],
+    required: true,
+  },
   generatedBy: {
     type: String,
-    enum: ['system', 'admin'],
-    default: 'system',
+    enum: ['admin', 'system'], // must match these values
+    required: true,
   },
-}, {
-  timestamps: true,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Recommendation = mongoose.model('Recommendation', recommendationSchema);
